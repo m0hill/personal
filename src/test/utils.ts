@@ -1,11 +1,9 @@
 import { env } from "cloudflare:workers"
+import { handleWithEnv } from "@/app"
 
-export const loadApp = async (): Promise<{
+export const loadApp = (): {
   readonly fetch: (request: Request) => Promise<Response>
-}> => {
-  const app = await import("@/app")
-  return { fetch: (request) => app.handleWithEnv(request, env) }
-}
+} => ({ fetch: (request) => handleWithEnv(request, env) })
 
 export const request = (path: string, init: RequestInit = {}): Request =>
   new Request(`http://test.local${path}`, init)

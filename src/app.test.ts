@@ -3,7 +3,7 @@ import { loadApp, request } from "@/test/utils"
 
 describe("personal site baseline", () => {
   it("serves a minimal Mohil.dev home page", async () => {
-    const app = await loadApp()
+    const app = loadApp()
     const response = await app.fetch(request("/"))
     const html = await response.text()
 
@@ -15,7 +15,7 @@ describe("personal site baseline", () => {
   })
 
   it("serves a designed not-found page", async () => {
-    const app = await loadApp()
+    const app = loadApp()
     const response = await app.fetch(request("/missing"))
     const html = await response.text()
 
@@ -29,7 +29,7 @@ describe("personal site baseline", () => {
   it.each(["/kv", "/d1", "/r2", "/do", "/live-counter", "/api", "/web-component", "/design"])(
     "does not expose the former demo route %s",
     async (path) => {
-      const app = await loadApp()
+      const app = loadApp()
       const response = await app.fetch(request(path))
       const html = await response.text()
 
