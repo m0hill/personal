@@ -48,7 +48,7 @@ const captureWideEvents = async (
 
 describe("wide-event request logger", () => {
   it("emits exactly one structured console object per request, enriched with handler context", async () => {
-    const app = await loadApp()
+    const app = loadApp()
     const { events, entries } = await captureWideEvents(() => app.fetch(request("/")))
 
     expect(events).toHaveLength(1)
@@ -68,7 +68,7 @@ describe("wide-event request logger", () => {
   })
 
   it("logs unmatched routes as a single warn-level event", async () => {
-    const app = await loadApp()
+    const app = loadApp()
     const { events } = await captureWideEvents(() => app.fetch(request("/nope")))
 
     expect(events).toHaveLength(1)
