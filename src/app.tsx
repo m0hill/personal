@@ -2,10 +2,11 @@ import { Context, Layer, Logger } from "effect"
 import { HttpRouter } from "effect/unstable/http"
 import { makeRequestLog, RequestLog } from "@/lib/observability/request-log"
 import { wideEventLogger } from "@/lib/observability/wide-event"
+import { aboutRoutes } from "@/pages/about/index"
 import { homeRoutes } from "@/pages/home/index"
 import { notFoundRoute } from "@/pages/not-found"
 
-export const AppLayer = Layer.mergeAll(homeRoutes, notFoundRoute).pipe(
+export const AppLayer = Layer.mergeAll(homeRoutes, aboutRoutes, notFoundRoute).pipe(
   Layer.provide(HttpRouter.middleware(wideEventLogger).layer),
   Layer.provideMerge(Logger.layer([Logger.consoleStructured])),
 )

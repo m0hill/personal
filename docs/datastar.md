@@ -4,6 +4,7 @@ Read for server TSX, Datastar attributes, signals, patches, streams.
 
 ## Runtime
 
+- The pinned browser runtime lives at `public/datastar.js` and is served through Worker Assets.
 - Effect routes return via `src/lib/datastar.ts`.
 - Use `datastarPage`, `datastarPatch`, `datastarSignals`, `datastarStream`, `datastarDone`.
 - Import authoring helpers from `datastar-kit`.
@@ -74,7 +75,7 @@ Read for server TSX, Datastar attributes, signals, patches, streams.
 
 ## Realtime
 
-- Use `src/lib/realtime/live-view.ts`.
+- Add a feature-owned live-view module when a realtime ticket establishes its source of truth.
 - First event renders current truth.
 - Pulses mean only “something changed”.
 - Streams re-read truth after pulses.
@@ -89,6 +90,8 @@ Read for server TSX, Datastar attributes, signals, patches, streams.
 ## Browser
 
 - Prefer native inputs, `data-bind`, actions, server patches.
+- Shared theme state lives in `SiteShell`; its Datastar signal persists explicit light/dark choices to `localStorage` and leaves system preference as the default.
+- Keep the tiny pre-paint theme bootstrap in `pageHead` aligned with the shell's storage key and accepted values.
 - Do not add a project-owned client bundle; escalate browser-only requirements as an architecture decision.
 - Do not ship `DatastarDebugger` in production.
 - Render debugger before `data-init` components if it must catch those fetches.

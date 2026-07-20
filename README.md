@@ -11,7 +11,7 @@ Source for [mohil.dev](https://mohil.dev), Mohil Garg's personal portfolio, tech
 - Tailwind CSS v4
 - Vitest Workers and Playwright
 
-The current baseline intentionally provisions only a Worker and Worker Assets. Product pages, source-controlled writing, and One Million Checkboxes are delivered incrementally through the tracked work plan.
+The current site includes the editorial shell, Home, About, and designed not-found pages. Projects, source-controlled writing, and One Million Checkboxes are delivered incrementally through the tracked work plan.
 
 ## Local development
 

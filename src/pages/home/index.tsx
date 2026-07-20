@@ -1,6 +1,5 @@
 import { Effect } from "effect"
 import { HttpRouter } from "effect/unstable/http"
-import { SITE_TITLE } from "@/lib/constants"
 import { datastarPage } from "@/lib/datastar"
 import { annotate } from "@/lib/observability/request-log"
 import { pageHead } from "@/ui/head"
@@ -10,8 +9,12 @@ const homePage = Effect.gen(function* () {
   yield* annotate({ page: { name: "home" } })
 
   return datastarPage(<HomePage />, {
-    title: SITE_TITLE,
-    head: pageHead(),
+    title: "Mohil Garg — Software engineer",
+    head: pageHead({
+      canonicalPath: "/",
+      description:
+        "Mohil Garg builds cloud systems, developer tools, and realtime web experiences.",
+    }),
   })
 }).pipe(Effect.withSpan("home.page"))
 
