@@ -38,9 +38,7 @@ nub run destroy -- --stage pr-123
 - Derive env types from the Worker resource.
 
 ```ts
-export const Worker = Cloudflare.Worker("Worker", {
-  /* ... */
-})
+export const Worker = Cloudflare.Worker("Worker", {/* ... */})
 
 export type WorkerEnv = Cloudflare.InferEnv<typeof Worker>
 ```
