@@ -1,8 +1,6 @@
 import { Option, Schema } from "effect"
-import { beforeEach, describe, expect, it, vi } from "vitest"
-import { datastarPost, loadApp, request, resetD1Counters } from "@/test/utils"
-
-beforeEach(resetD1Counters)
+import { describe, expect, it, vi } from "vitest"
+import { loadApp, request } from "@/test/utils"
 
 const WideEventSchema = Schema.Struct({
   message: Schema.Literals(["http_request"]),
@@ -51,7 +49,7 @@ const captureWideEvents = async (
 describe("wide-event request logger", () => {
   it("emits exactly one structured console object per request, enriched with handler context", async () => {
     const app = await loadApp()
-    const { events, entries } = await captureWideEvents(() => app.fetch(request("/d1")))
+    const { events, entries } = await captureWideEvents(() => app.fetch(request("/")))
 
     expect(events).toHaveLength(1)
     expect(entries).toHaveLength(1)
@@ -59,25 +57,14 @@ describe("wide-event request logger", () => {
     const [event] = events
     expect(event?.level).toBe("INFO")
     expect(event?.annotations).toMatchObject({
-      http: { method: "GET", path: "/d1", status: 200 },
-      d1Counter: { ok: true, action: "view" },
+      http: { method: "GET", path: "/", status: 200 },
+      page: { name: "home" },
     })
     const http = Option.getOrThrowWith(
       Schema.decodeUnknownOption(HttpAnnotationSchema)(event?.annotations.http),
       () => new Error("expected http duration annotation"),
     )
     expect(typeof http.durationMs).toBe("number")
-  })
-
-  it("records the action that mutated the request", async () => {
-    const app = await loadApp()
-    const { events } = await captureWideEvents(() => app.fetch(datastarPost("/d1/increment")))
-
-    expect(events).toHaveLength(1)
-    expect(events[0]?.annotations).toMatchObject({
-      http: { method: "POST", path: "/d1/increment", status: 200 },
-      d1Counter: { ok: true, action: "increment" },
-    })
   })
 
   it("logs unmatched routes as a single warn-level event", async () => {

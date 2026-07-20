@@ -24,7 +24,8 @@ jobs:
 
       - name: Install nub
         run: |
-          curl -fsSL https://nubjs.com/install.sh | bash
+          nub_version="$(node -p "require('./package.json').devEngines.packageManager.version.replace(/^\\^/, '')")"
+          curl -fsSL https://raw.githubusercontent.com/nubjs/nub/main/install.sh | bash -s -- "$nub_version"
           echo "$HOME/.nub/bin" >> "$GITHUB_PATH"
 
       - name: Install dependencies

@@ -16,7 +16,7 @@ export type Row = Schema.Schema.Type<typeof rowSchema>
 
 ## Queries
 
-- Use `drizzle(env.APP_DB)` for D1.
+- Use `drizzle(env.<D1_BINDING>)` for a configured D1 binding.
 - Use `drizzle(ctx.storage)` for DO SQLite.
 - D1 is not DO SQLite; do not assume arbitrary `sql.withTransaction(...)` support.
 - Use D1 `batch` for explicit transactional batches.

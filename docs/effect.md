@@ -4,7 +4,7 @@
 
 - Use Effect where nearby code uses Effect.
 - Routes, request handling, services, schemas, failures, and resource wiring use Effect.
-- Browser-only `src/client` code stays plain browser TypeScript.
+- The project currently has no custom browser module; browser behavior uses Datastar.
 - Pure sync helpers with no dependencies or expected failures stay plain TypeScript.
 - Helpers with services, time, randomness, I/O, parsing failures, or domain failures use Effect.
 - Avoid `async`/`await` and `try`/`catch` inside Effect workflows; convert promises and exceptions at external seams.

@@ -29,7 +29,9 @@ nub run destroy -- --stage pr-123
 
 ## Resources
 
+- The current graph contains only the Worker and Worker Assets.
 - `alchemy.run.ts` owns resources and Worker bindings.
+- Add storage only when a product ticket establishes its source of truth.
 - Prefer generated physical names.
 - Set physical names only for adoption.
 - Keep shared resource consts top-level.
@@ -62,13 +64,14 @@ assets: {
 
 ## D1
 
-- Declare D1 with `migrationsDir: "./migrations/drizzle"`.
-- Alchemy applies D1 migrations in `alchemy dev` and `alchemy deploy`.
-- Keep Drizzle generation scripts.
+- The current graph has no D1 database.
+- If D1 is added, declare it with an explicit migrations directory.
+- Alchemy applies configured D1 migrations in `alchemy dev` and `alchemy deploy`.
 
 ## Durable Objects
 
-- Class methods are the typed RPC surface.
+- The current baseline has no Durable Object namespace.
+- Class methods are the typed RPC surface when one is added.
 - Let Alchemy derive namespace/stub types from actual DO methods.
 - Use `DurableObject<unknown>` when the DO does not read env.
 - Use a narrow local env type when the DO reads env.

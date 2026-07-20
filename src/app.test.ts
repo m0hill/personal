@@ -1,28 +1,40 @@
-import { Context, Effect } from "effect"
 import { describe, expect, it } from "vitest"
-import { KvCounter } from "@/resources/kv-counter/kv-counter"
-import { loadAppWithServiceOverrides, request } from "@/test/utils"
+import { loadApp, request } from "@/test/utils"
 
-describe("app seam", () => {
-  it("can run routes with an explicit service context", async () => {
-    const app = await loadAppWithServiceOverrides((context) =>
-      context.pipe(
-        Context.add(
-          KvCounter,
-          KvCounter.of({
-            current: Effect.succeed(41),
-            increment: Effect.succeed(42),
-          }),
-        ),
-      ),
-    )
-
-    const response = await app.fetch(request("/kv"))
+describe("personal site baseline", () => {
+  it("serves a minimal Mohil.dev home page", async () => {
+    const app = await loadApp()
+    const response = await app.fetch(request("/"))
     const html = await response.text()
 
     expect(response.status).toBe(200)
-    expect(html).toContain(
-      '<output id="kv-count" class="text-5xl font-bold tabular-nums">41</output>',
-    )
+    expect(response.headers.get("content-type")).toBe("text/html; charset=utf-8")
+    expect(html).toContain("<title>Mohil.dev</title>")
+    expect(html).toContain(">Mohil.dev</h1>")
+    expect(html).toContain("Portfolio and writing")
   })
+
+  it("serves a designed not-found page", async () => {
+    const app = await loadApp()
+    const response = await app.fetch(request("/missing"))
+    const html = await response.text()
+
+    expect(response.status).toBe(404)
+    expect(response.headers.get("content-type")).toBe("text/html; charset=utf-8")
+    expect(html).toContain("<title>Page not found — Mohil.dev</title>")
+    expect(html).toContain(">Page not found</h1>")
+    expect(html).toContain('href="/"')
+  })
+
+  it.each(["/kv", "/d1", "/r2", "/do", "/live-counter", "/api", "/web-component", "/design"])(
+    "does not expose the former demo route %s",
+    async (path) => {
+      const app = await loadApp()
+      const response = await app.fetch(request(path))
+      const html = await response.text()
+
+      expect(response.status).toBe(404)
+      expect(html).toContain(">Page not found</h1>")
+    },
+  )
 })

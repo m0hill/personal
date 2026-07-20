@@ -1,77 +1,15 @@
 import { SITE_TITLE } from "@/lib/constants"
-import { DemoCard, type Demo } from "@/pages/home/components/demo-card"
-
-const demos: readonly Demo[] = [
-  {
-    href: "/kv",
-    title: "KV counter",
-    tag: "Workers KV",
-    blurb: "A counter persisted in a Cloudflare KV namespace, incremented server-side in Effect.",
-  },
-  {
-    href: "/d1",
-    title: "D1 + Drizzle counter",
-    tag: "D1 · Drizzle",
-    blurb: "The same counter on D1 (SQLite) via Drizzle, with rows parsed by Effect Schema.",
-  },
-  {
-    href: "/r2",
-    title: "R2 object store",
-    tag: "R2",
-    blurb: "Save, list, open, and delete text objects in an R2 bucket, each op a typed Effect.",
-  },
-  {
-    href: "/do",
-    title: "Durable Object",
-    tag: "DO · Drizzle",
-    blurb: "Per-room chat — one DO owns SQLite, writes, and payload-free live pulses.",
-  },
-  {
-    href: "/live-counter",
-    title: "Live counter",
-    tag: "D1 · DO pulses",
-    blurb:
-      "D1 is the source of truth; a generic Durable Object wakes streams to re-read and patch.",
-  },
-  {
-    href: "/api",
-    title: "External API",
-    tag: "Fetch · MSW",
-    blurb: "Look up a GitHub repo through an Effect service, parsed with Schema, mocked with MSW.",
-  },
-  {
-    href: "/web-component",
-    title: "Web component",
-    tag: "Custom element",
-    blurb:
-      "Browser-only logic the minimal-JS way — a signal feeds a <qr-code> element via data-attr.",
-  },
-  {
-    href: "/design",
-    title: "Design system",
-    tag: "UI",
-    blurb:
-      "The tokens and UI primitives every page shares — colors, type, buttons, and form controls.",
-  },
-]
 
 export const HomePage = () => (
   <main
     id="app"
-    class="mx-auto flex max-w-3xl flex-col gap-8 p-4 sm:p-8"
+    class="mx-auto flex min-h-screen max-w-3xl flex-col justify-center gap-4 p-4 sm:p-8"
   >
-    <header class="flex flex-col gap-3">
-      <h1 class="text-2xl font-bold sm:text-3xl">{SITE_TITLE}</h1>
-      <p class="max-w-2xl text-muted">
-        A Cloudflare Workers starter built on Effect, Datastar, and datastar-kit. Each page below is
-        a self-contained demo of one capability — open it, then read the linked source to copy the
-        pattern into your own app.
-      </p>
-    </header>
-    <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      {demos.map((demo) => (
-        <DemoCard demo={demo} />
-      ))}
-    </ul>
+    <p class="text-sm font-medium text-muted">Personal site</p>
+    <h1 class="text-3xl font-bold sm:text-4xl">{SITE_TITLE}</h1>
+    <p class="max-w-xl text-muted">
+      Portfolio and writing are taking shape. Projects, essays, and a collaborative experiment are
+      coming next.
+    </p>
   </main>
 )

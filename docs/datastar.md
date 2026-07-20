@@ -89,7 +89,7 @@ Read for server TSX, Datastar attributes, signals, patches, streams.
 ## Browser
 
 - Prefer native inputs, `data-bind`, actions, server patches.
-- Use `src/client/` only for browser APIs or complex DOM behavior.
+- Do not add a project-owned client bundle; escalate browser-only requirements as an architecture decision.
 - Do not ship `DatastarDebugger` in production.
 - Render debugger before `data-init` components if it must catch those fetches.
 

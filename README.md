@@ -1,40 +1,36 @@
-# personal
+# Mohil.dev
 
-Cloudflare Workers + Alchemy + Effect + Datastar + datastar-kit starter for hypermedia-driven TypeScript apps.
+Source for [mohil.dev](https://mohil.dev), Mohil Garg's personal portfolio, technical blog, and collaborative web experiments.
 
-## Start A New Project
+## Stack
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/m0hill/boilerplate/main/scripts/boilerplate.sh | bash -s -- my-app
-```
+- Cloudflare Workers and Worker Assets
+- Alchemy for infrastructure and deployment
+- Effect HTTP routing and observability
+- Server-rendered TSX with Datastar and `datastar-kit`
+- Tailwind CSS v4
+- Vitest Workers and Playwright
 
-## Run Locally
+The current baseline intentionally provisions only a Worker and Worker Assets. Product pages, source-controlled writing, and One Million Checkboxes are delivered incrementally through the tracked work plan.
+
+## Local development
 
 ```sh
 nub install
 nub run dev
-nub run check
 ```
-
-First `alchemy` run prompts for Cloudflare auth and state-store setup.
 
 Open `http://localhost:8787`.
 
-## Demos
+## Verification
 
-The landing page links to these routes:
+```sh
+nub run check
+nub run test:e2e
+```
 
-| Route            | Shows                                                                  |
-| ---------------- | ---------------------------------------------------------------------- |
-| `/kv`            | Workers KV counter.                                                    |
-| `/d1`            | D1 counter with Drizzle rows parsed by Schema.                         |
-| `/r2`            | R2 text object save, list, open, delete.                               |
-| `/do`            | Per-room chat with Durable Object SQLite and live pulses.              |
-| `/live-counter`  | D1 counter synced through a Durable Object invalidation hub.           |
-| `/api`           | GitHub lookup with an Effect service, Schema, and MSW-backed tests.    |
-| `/web-component` | Browser-only `<qr-code>` custom element fed by Datastar-bound signals. |
+## Project guidance
 
-## More
-
-- `AGENTS.md` — agent entry point.
-- `docs/` — architecture, Alchemy, Effect, Drizzle, testing, styling, and conventions.
+- `AGENTS.md` is the agent entry point.
+- `docs/` contains narrow architecture and implementation guides.
+- Planning issues live in the private Kaam-dō tracker described by `docs/agents/issue-tracker.md`.

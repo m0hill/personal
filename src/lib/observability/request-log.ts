@@ -21,7 +21,7 @@ export class RequestLog extends Context.Service<
     readonly annotate: (fields: LogFields) => Effect.Effect<void>
     readonly snapshot: Effect.Effect<LogFields>
   }
->()("boilerplate/lib/observability/RequestLog") {}
+>()("personal/lib/observability/RequestLog") {}
 
 export const makeRequestLog = (): RequestLog["Service"] => {
   const ref = Effect.runSync(Ref.make<LogFields>({}))

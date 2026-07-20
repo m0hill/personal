@@ -2,7 +2,7 @@
 
 - Tokens: `src/styles.css`.
 - Primitives: `src/ui/`.
-- Showcase: `/design`.
+- Shared primitives are introduced only after repeated product use.
 - Call sites use Tailwind v4 utilities.
 
 ## Tokens
@@ -36,7 +36,7 @@
 
 ## Primitives
 
-- Shared primitives: `Button`, `Input`, `Textarea`, `Field`, `FieldError`, `Badge`, `Layout`, `pageHead`.
+- The baseline shared UI surface is `pageHead`.
 - Wrap native elements.
 - Pass native and Datastar `data-*` attributes through.
 - Variants are typed object maps.
@@ -50,18 +50,7 @@
 - Keep one primitive family per `src/ui/` file.
 - Native wrappers use `HtmlElements["tag"] & { ... }` props.
 - Start with minimal variants.
-- Add new primitives to `/design`.
-
-## Pending state
-
-- Commands show in-flight state, not optimistic success.
-- Use a local signal: `const busy = local<boolean>("saveBusy")`.
-- Put `data-indicator={busy}` on the fetch trigger.
-- Pass the same signal to `Button` `busy`.
-- Busy button CSS lives in `src/styles.css`.
-- Do not put `data-indicator` on long-lived streams.
-- No page overlays.
-- Long jobs stream progress as SSE patches.
+- Cover new primitives through their real product call sites.
 
 ## CSS
 
@@ -77,4 +66,4 @@
 - No raw colors in component TSX.
 - Repeated UI becomes a primitive or page component.
 - Interactive elements are native and keyboard-reachable.
-- New primitives appear on `/design`.
+- New primitives have a real repeated product use.
