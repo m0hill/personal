@@ -38,3 +38,13 @@ Then read the narrow `docs/` guide for files you touch.
 - Read `docs/documentation.md` before creating or editing Markdown docs.
 - Run `nub run check` before handoff.
 - Run `nub run test:e2e` when browser behavior changes.
+
+## Agent skills
+
+### Issue tracker
+
+Planning issues live in the private central `m0hill/kaam-do` tracker. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+This is a single-context repository with domain documentation rooted at `CONTEXT.md` and `docs/adr/`. See `docs/agents/domain.md`.
