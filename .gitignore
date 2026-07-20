@@ -2,7 +2,6 @@ node_modules/
 repos/
 dist/
 public/app.css
-public/js/
 *.log
 .DS_Store
 .env

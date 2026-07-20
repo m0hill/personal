@@ -3,9 +3,9 @@
 ## Test Choice
 
 - Use `*.test.ts` for Worker/runtime behavior.
-- Cover routes, Datastar payloads, Effect/domain logic, bindings, and MSW-backed external HTTP.
+- Cover routes, Datastar payloads, Effect/domain logic, bindings, and external HTTP seams.
 - Use `*.e2e.ts` only for browser behavior.
-- Cover DOM updates, real clicks, focus, keyboard, and web components.
+- Cover DOM updates, real clicks, focus, and keyboard behavior.
 - `nub run check` runs Vitest.
 - `nub run check` does not run Playwright.
 - Run `nub run test:e2e` when browser behavior or Playwright config changes.
@@ -29,7 +29,7 @@
 - Use `app.fetch(datastarPost("/...", signals))`.
 - Assert status, content type, HTML, SSE events, signal patches, and user copy.
 - Mock only outside the app boundary.
-- Use `@msw/cloudflare` for external HTTP.
+- Add an external-HTTP adapter and test tool only when a product integration requires one.
 - Prefer real seams, in-memory adapters, Worker test bindings, and deterministic inputs.
 - Use `TestClock` from `effect/testing` for Effect time.
 - Fork sleeping or recurring effects before `TestClock.adjust(...)`.

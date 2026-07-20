@@ -25,8 +25,8 @@ Then read the narrow `docs/` guide for files you touch.
 - Node APIs are fine in `scripts/` and tests.
 - Prefer server TSX + Datastar + SSE.
 - Prefer native inputs with `data-bind` before client code.
-- Use `src/client/` web components for canvas, charts, audio, and browser-only logic.
-- Use plain imperative JS after Datastar and web components are a bad fit.
+- Do not add a project-owned client bundle.
+- Use Datastar expressions, backend actions, and server patches for browser behavior.
 - Routes use Effect `HttpRouter`.
 - Handlers return `HttpServerResponse`.
 - Datastar responses use `src/lib/datastar.ts`.

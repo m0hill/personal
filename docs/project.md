@@ -2,135 +2,77 @@
 
 ## Stack
 
-- `alchemy.run.ts` owns Cloudflare resources, bindings, assets, and stages.
-- `src/index.tsx` exports the Worker `fetch` handler and DO classes.
-- `src/app.tsx` owns route composition, middleware, and request-context service wiring.
+- `alchemy.run.ts` owns the Worker, Worker Assets, deployment stages, and future Cloudflare resources.
+- The current Cloudflare graph contains only the Worker and Worker Assets.
+- `src/index.tsx` exports the Worker `fetch` handler.
+- `src/app.tsx` owns route composition, middleware, and request-context wiring.
 - HTTP uses Effect `HttpRouter`.
-- Keep hypermedia and SSE routes on `HttpRouter`.
-- Use small `HttpApi` contract slices when JSON APIs need schema-first routing.
 - UI is server-rendered TSX through `datastar-kit`.
-- Datastar helpers live in `src/lib/datastar.ts`.
+- Datastar response helpers live in `src/lib/datastar.ts`.
 - Tailwind builds `src/styles.css` to `public/app.css`.
-- `scripts/build-client.ts` bundles `src/client/` to `public/js/`.
 - Vitest runs in the Workers runtime.
 - Playwright runs against `alchemy dev`.
+- There is no project-owned browser bundle.
 
 ## UI
 
-- Default to server TSX + Datastar `data-*` + SSE.
+- Default to server TSX, Datastar `data-*` attributes, backend actions, and SSE patches.
 - Use native inputs and `data-bind` for form state.
-- Use a web component when browser APIs are required.
-- Keep Datastar owning inputs.
-- Feed web components through `data-attr`.
-- Emit web component events through `data-on`.
-- `/web-component` is the pattern.
+- Do not add a client application or web-component build without an approved architectural change.
+- Keep JSX synchronous and load data before rendering.
 
 ## State
 
-- Prefer Durable Objects for stateful features.
-- Prefer DO-owned SQLite for strongly consistent owner state.
-- Use one named DO instance per consistency boundary.
-- Address DOs with `NAMESPACE.idFromName(name)`.
-- Name DO instances by owner: `room:<id>`, `user:<id>`, `doc:<id>`.
-- Keep DO SQLite schema and logic with the DO resource.
-- Expose narrow DO RPC methods.
-- Return parsed structured-clone-safe DTOs from DO RPC methods.
-- Adapt DO namespaces into worker-side services before page code uses them.
-- Run Effect at the DO seam with `Effect.runPromise` or `Effect.runSync`.
-- Use D1 for global relational queries across owners.
-- Use KV for cheap eventually-consistent reads.
-- Do not turn public KV misses into Durable Object fallback reads.
-- For D1 + live UI, use a DO as an invalidation hub.
-- `/do` shows DO-owned state.
-- `/live-counter` shows D1 + invalidation DO.
-
-## Feature Workflows
-
-- Multi-resource features get one workflow `Context.Service`.
-- Cloudflare workflows: `src/resources/<feature>/`.
-- External workflows: `src/services/<feature>/`.
-- Workflow services own cross-resource order and errors.
-- `makeRequestContext` builds workflows from narrow adapters.
-- Pages depend on workflow services.
-- Pages translate HTTP, Datastar, rendering, and user errors.
-- Keep lower-level adapters only when reused directly.
-
-## Realtime
-
-- Truth lives in D1, KV, or a DO.
-- Subscribe before first read.
-- Render current state as the first event.
-- Commands mutate truth.
-- Commands publish a payload-free pulse.
-- Streams re-read truth after each pulse.
-- Reconnects render current backend state.
-- Streams patch live regions.
-- Commands do not patch shared live regions with durable markup.
-- Commands return `datastarDone()` for success-only updates.
-- Commands patch signals for form cleanup or user-fixable errors.
-- Use `src/lib/realtime/pulse.ts` for DO-local sliding pulses.
-- Use `src/lib/realtime/live-view.ts` for Datastar streams.
+- The current baseline has no application storage bindings.
+- Add a Cloudflare resource only when a product ticket establishes its source of truth and consistency boundary.
+- Future Durable Objects own their SQLite schema and expose narrow structured-clone-safe RPC methods.
+- Adapt raw bindings into Effect services before page code uses them.
 
 ## Observability
 
 - Each request emits one structured wide event.
-- `wideEventLogger` writes it.
-- The wide event is the per-request Worker log record.
+- `wideEventLogger` writes the per-request Worker log record.
 - Middleware adds `http.method`, `http.path`, `http.status`, and `http.durationMs`.
-- `http.durationMs` is based on Worker timers; in production it advances after I/O, not during CPU-only work.
 - Add request fields with `annotate`.
-- Use `annotateAction` for action fields: `{ d1Counter: { action, ok } }`.
-- Use raw `annotate` only for non-action request fields.
+- Use `annotateAction` for action fields.
 - Keep secrets, tokens, and raw request bodies out of logs.
 - Install structured console logging with `Layer.provideMerge(Logger.layer([Logger.consoleStructured]))`.
 
 ## Layout
 
-- `src/index.tsx` — Worker entry and DO exports.
-- `src/app.tsx` — route merge, middleware, and request-context service wiring.
-- `src/lib/datastar.ts` — Datastar/Effect bridge and signal decoding.
-- `src/pages/<name>/index.tsx` — routes, handlers, Datastar state, parse errors.
-- `src/pages/<name>/components/` — page-local TSX.
-- `src/pages/<name>/tests/` — route and browser tests.
-- `src/pages/not-found.ts` — catch-all 404.
-- `src/resources/<name>/` — Cloudflare adapters, schemas, DOs, persistence.
-- `src/services/<name>/` — external services and non-Cloudflare capabilities.
-- `src/ui/` — design-system primitives and page chrome; `/design` renders them.
-- `src/lib/` — named glue such as Datastar, observability, realtime.
-- `src/client/` — browser-only web components and modules.
-- `src/test/` — shared test helpers.
+- `src/index.tsx` — Worker entry.
+- `src/app.tsx` — route merge, middleware, and request-context wiring.
+- `src/lib/datastar.ts` — Datastar and Effect response bridge.
+- `src/lib/observability/` — request annotations and wide-event logging.
+- `src/pages/home/` — minimal product home.
+- `src/pages/not-found.tsx` — catch-all HTML 404.
+- `src/test/` — shared Worker test helpers.
+- `src/ui/head.tsx` — shared document head.
 - `docs/` — narrow agent guides.
-- `public/` — Worker assets.
+- `public/` — generated or copied Worker assets.
 - `repos/` — read-only references.
 
-## Add A Page
+## Add a page
 
 - Create `src/pages/<name>/index.tsx`.
-- Export a route `Layer`.
-- Register routes with `HttpRouter.add(...)`.
-- Use `Layer.mergeAll(...)` when a page has multiple routes.
-- Keep small page state in `index.tsx`.
-- Move larger page state to `src/pages/<name>/state.ts`.
-- Put page TSX in `components/`.
-- Put resource code in `src/resources/<resource>/`.
-- Put external API code in `src/services/<service>/`.
-- Add a workflow service when a page coordinates multiple resources.
-- Merge the route in `src/app.tsx`.
-- Wire bindings, adapters, and workflow services in `makeRequestContext`.
-- Test with `loadApp()` and `app.fetch(request("/..."))`.
-- Use `loadAppWithContext(() => makeRequestContext(...))` when a route test needs explicit service adapters.
+- Export an Effect `HttpRouter` route or route layer.
+- Put page TSX in `src/pages/<name>/components/`.
+- Put page tests in `src/pages/<name>/tests/` when they are not better covered at the app seam.
+- Merge the route in `src/app.tsx` before the catch-all route.
+- Parse untrusted input with Effect Schema.
+- Test through `loadApp()` and `app.fetch(request("/..."))`.
 
 ## Commands
 
-- `nub run dev` — build, watch CSS/client JS, run `alchemy dev`.
-- `nub run build` — build CSS and browser JS.
-- `nub run preview` — build once, run `alchemy dev`.
-- `nub run deploy` — build, deploy selected stage.
-- `nub run destroy` — destroy selected stage.
+- `nub run dev` — build CSS, watch CSS, and run `alchemy dev`.
+- `nub run build` — build production CSS.
+- `nub run preview` — build once and run `alchemy dev`.
+- `nub run deploy` — build and deploy the selected stage.
+- `nub run destroy` — destroy the selected stage.
 - `nub run logs` / `nub run tail` — Worker logs.
 - `nub run test` — Vitest Workers tests.
 - `nub run test:e2e` — Playwright on port 8787.
-- `nub run check` — typecheck, lint, format check, Vitest.
+- `nub run check` — typecheck, lint, format check, and Vitest.
 - `nub run lint:fix` / `nub run format` — autofix.
 
-Three TS projects exist: Worker (`tsconfig.json`), `src/client`, and `scripts`.
+Two TypeScript projects exist: Worker code in `tsconfig.json` and Node-based tool configuration in `tsconfig.tools.json`.

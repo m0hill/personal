@@ -4,8 +4,8 @@
 
 - Worker modules use Web and Cloudflare runtime APIs.
 - Node APIs are allowed in `scripts/` and tests.
-- `src/client` is browser-only.
-- `src/client` imports browser-safe modules only.
+- The project has no custom browser bundle.
+- Add browser modules only after an approved architectural change.
 - Bindings enter through `src/index.tsx`.
 - Adapt bindings into narrow services before page or domain code uses them.
 
@@ -13,7 +13,7 @@
 
 - Routes, handlers, services, schemas, failures, and resource wiring use Effect.
 - Pure sync helpers with no dependencies or expected failures stay plain TypeScript.
-- Browser-only `src/client` stays plain browser TypeScript.
+- Browser behavior stays in Datastar expressions and server-driven patches.
 - Effect code uses services, layers, `Option`, Schema, and tagged errors.
 - Expected failures stay in the Effect error channel.
 - Do not replace Effect workflows with `async`/`await`, `try`/`catch`, thrown expected errors, or service bags.
@@ -40,7 +40,6 @@
 - Put page TSX in `src/pages/<name>/components/`.
 - Put page tests in `src/pages/<name>/tests/`.
 - Put Cloudflare resource code in `src/resources/<resource>/`.
-- Put D1 schema in `src/resources/d1/`.
 - Put DO SQLite schema with its DO resource.
 - Put external services in `src/services/<service>/`.
 - Put shared app glue in named `src/lib/` modules.
