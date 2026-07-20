@@ -27,16 +27,19 @@
 - Use token color utilities only.
 - Prefer parent `gap-*` over sibling margins.
 - Radius: controls `rounded-md`, containers `rounded-lg`, pills `rounded-full`.
-- Type: pages `text-2xl font-bold`, sections `text-lg font-semibold`.
-- Secondary text: `text-sm text-muted`.
-- Fine print: `text-xs`.
+- Editorial display headings use `display-heading`.
+- Eyebrows and section labels use `eyebrow` or the matching section-owned style.
+- Body copy remains sans-serif; display copy is serif; metadata and navigation are monospace.
+- Secondary text uses `text-muted`.
+- Fine print uses `text-xs`.
 - Focus is global.
 - Do not add per-element rings.
 - Long repeated class strings become primitives or page components.
 
 ## Primitives
 
-- The baseline shared UI surface is `pageHead`.
+- `SiteShell` owns the shared navigation, theme control, landmarks, skip link, and footer.
+- `pageHead` owns shared metadata, theme bootstrap, styles, and the pinned Datastar runtime.
 - Wrap native elements.
 - Pass native and Datastar `data-*` attributes through.
 - Variants are typed object maps.
@@ -44,7 +47,6 @@
 - Primitives own internal classes.
 - Call-site `class` is for layout or one-off formatting only.
 - Restyle primitives with a variant or a primitive fix.
-- Join classes with `src/ui/cx.ts`.
 - Extract after repeated real use.
 - Prefer native elements.
 - Keep one primitive family per `src/ui/` file.
@@ -54,7 +56,7 @@
 
 ## CSS
 
-- `src/styles.css` owns `@theme`, base, fonts, globals, keyframes, third-party overrides, prose, and awkward selectors.
+- `src/styles.css` owns `@theme`, light/dark role mappings, base styles, editorial roles, globals, keyframes, third-party overrides, prose, and awkward selectors.
 - Keep product CSS small.
 - Use more CSS for generated or content-heavy markup.
 - True one-offs stay inline as utilities.

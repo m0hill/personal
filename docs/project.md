@@ -10,6 +10,7 @@
 - UI is server-rendered TSX through `datastar-kit`.
 - Datastar response helpers live in `src/lib/datastar.ts`.
 - Tailwind builds `src/styles.css` to `public/app.css`.
+- The pinned Datastar browser runtime is served from `public/datastar.js`.
 - Vitest runs in the Workers runtime.
 - Playwright runs against `alchemy dev`.
 - There is no project-owned browser bundle.
@@ -44,10 +45,12 @@
 - `src/app.tsx` — route merge, middleware, and request-context wiring.
 - `src/lib/datastar.ts` — Datastar and Effect response bridge.
 - `src/lib/observability/` — request annotations and wide-event logging.
-- `src/pages/home/` — minimal product home.
-- `src/pages/not-found.tsx` — catch-all HTML 404.
+- `src/pages/home/` — editorial identity home and shell browser tests.
+- `src/pages/about/` — source-controlled About narrative.
+- `src/pages/not-found.tsx` — catch-all HTML 404 in the shared shell.
 - `src/test/` — shared Worker test helpers.
-- `src/ui/head.tsx` — shared document head.
+- `src/ui/head.tsx` — metadata, canonical URL, theme bootstrap, CSS, and runtime head entries.
+- `src/ui/site-shell.tsx` — navigation, theme state, page landmark, contact footer, and skip link.
 - `docs/` — narrow agent guides.
 - `public/` — generated or copied Worker assets.
 - `repos/` — read-only references.
